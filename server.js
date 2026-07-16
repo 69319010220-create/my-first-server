@@ -1,122 +1,23 @@
-res.end(`
-<!DOCTYPE html>
-<html lang="th">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CR7 Web Server</title>
+// 1. เรียกใชงาน Module ที่ชื่อวา 'http' ซึ่งเปนระบบพื้นฐานของ Node.js สําหรับทําเซิรฟ เวอร
+ const http = require('http');
 
-<style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
+ // 2. กําหนดชองทาง (Port) ที่เซิรฟเวอรจะใชสื่อสาร โดยใหใชของที่ Cloud กําหนดมา(process.env.PORT) ถาไมมีใหใช 3000
+ const port = process.env.PORT || 3000;
 
-body{
-    font-family:Arial, sans-serif;
-    overflow:hidden;
-}
+ // 3. สรางเครื่องแมขาย (Server) ที่คอยรับคําขอ (req) และตอบกลับ (res)
+ const server = http.createServer((req, res) => {
 
-/* พื้นหลัง */
-body::before{
-    content:"";
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    background:url("ronaldo.jpg") center center/cover no-repeat;
-    filter:brightness(40%);
-    animation:zoom 20s infinite alternate;
-    z-index:-2;
-}
+ // 3.1 ตั้งรหัสสถานะ 200 หมายถึง "ทํางานสําเร็จ (OK)"
+ res.statusCode = 200;
 
-/* Overlay */
-body::after{
-    content:"";
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    background:linear-gradient(rgba(0,0,0,.3),rgba(0,0,0,.6));
-    z-index:-1;
-}
+ // 3.2 บอกเบราวเซอรของผูใชวา สิ่งที่สงกลับไปคือไฟลขอความแบบ HTML และรองรับภาษาไทย (utf-8)
+ res.setHeader('Content-Type', 'text/html; charset=utf-8');
 
-@keyframes zoom{
-    from{
-        transform:scale(1);
-    }
-    to{
-        transform:scale(1.15);
-    }
-}
+// 3.3 สงขอมูลหนาเว็บกลับไปหาผูใช (*** ใหนักศึกษาแกชื่อ-นามสกุลตรงนี้ ***)
+res.end('<h1>สวัสดีครับ! นี่คือ Web Server ของ นายรพีพัทธ์ เจริญรัญวุฒิกุล รหัสนักศึกษา 123456789 </h1><p>เครื่องแม่ข่ายทํางานปกติบนระบบ Railway แล้วครับผม!</p>');
+ });
 
-.card{
-    position:absolute;
-    top:50%;
-    left:50%;
-    transform:translate(-50%,-50%);
-    background:rgba(255,255,255,.12);
-    backdrop-filter:blur(10px);
-    padding:40px;
-    border-radius:20px;
-    text-align:center;
-    color:white;
-    box-shadow:0 0 30px rgba(0,0,0,.5);
-    animation:fade 1s;
-}
-
-h1{
-    font-size:42px;
-    color:#FFD700;
-}
-
-h2{
-    margin-top:20px;
-}
-
-p{
-    margin-top:15px;
-    font-size:20px;
-}
-
-.status{
-    color:#00ff88;
-    font-weight:bold;
-    margin-top:25px;
-}
-
-@keyframes fade{
-    from{
-        opacity:0;
-        transform:translate(-50%,-40%);
-    }
-    to{
-        opacity:1;
-        transform:translate(-50%,-50%);
-    }
-}
-</style>
-</head>
-
-<body>
-
-<div class="card">
-
-<h1>⚽ CR7 WEB SERVER ⚽</h1>
-
-<h2>นายรพีพัทธ์ เจริญรัญวุฒิกุล</h2>
-
-<p>รหัสนักศึกษา : 123456789</p>
-
-<p class="status">
-🚀 Railway Server Online
-</p>
-
-</div>
-
-</body>
-</html>
-`);
+ // 4. สั่งใหเซิรฟเวอรเริ่มตนเปดรับฟงการเชื่อมตอตาม Port ที่กําหนดไว
+ server.listen(port, () => {
+ console.log(`Server is running! เครื่องแม่ข่ายเปิดทํางานแล้วที่ช่องทาง: ${port}`);
+ });
