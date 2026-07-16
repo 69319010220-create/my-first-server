@@ -1,14 +1,11 @@
-// เรียกใช้งาน Module http
-const http = require('http');
+const http = require("http");
 
-// กำหนด Port
 const port = process.env.PORT || 3000;
 
-// สร้าง Server
 const server = http.createServer((req, res) => {
 
     res.writeHead(200, {
-        'Content-Type': 'text/html; charset=utf-8'
+        "Content-Type": "text/html; charset=utf-8"
     });
 
     res.end(`
@@ -17,7 +14,7 @@ const server = http.createServer((req, res) => {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Railway Web Server</title>
+<title>World Cup Server</title>
 
 <style>
 
@@ -28,15 +25,15 @@ const server = http.createServer((req, res) => {
 }
 
 body{
-    font-family:Arial, Helvetica, sans-serif;
-    height:100vh;
-    overflow:hidden;
+    font-family:Arial, sans-serif;
     display:flex;
     justify-content:center;
     align-items:center;
-    background:linear-gradient(-45deg,#000428,#004e92,#1f1c2c,#000000);
+    height:100vh;
+    overflow:hidden;
+    background:linear-gradient(-45deg,#006400,#008000,#0b6623,#1b4332);
     background-size:400% 400%;
-    animation:bg 10s ease infinite;
+    animation:bg 12s ease infinite;
 }
 
 @keyframes bg{
@@ -46,58 +43,56 @@ body{
 }
 
 .card{
-    width:600px;
-    max-width:90%;
+    background:rgba(255,255,255,.12);
+    backdrop-filter:blur(12px);
     padding:40px;
     border-radius:20px;
-    background:rgba(255,255,255,.08);
-    backdrop-filter:blur(15px);
     text-align:center;
     color:white;
-    box-shadow:0 0 40px rgba(0,255,255,.5);
-    animation:show 1s;
+    width:650px;
+    box-shadow:0 0 30px rgba(255,215,0,.6);
+    animation:fade 1s;
 }
 
-@keyframes show{
+@keyframes fade{
     from{
-        transform:translateY(50px);
         opacity:0;
+        transform:translateY(50px);
     }
     to{
-        transform:translateY(0);
         opacity:1;
+        transform:translateY(0);
     }
 }
 
-.logo{
+.ball{
     font-size:70px;
+    animation:spin 5s linear infinite;
+}
+
+@keyframes spin{
+    from{transform:rotate(0deg);}
+    to{transform:rotate(360deg);}
 }
 
 h1{
+    color:#FFD700;
     margin:15px 0;
-    color:#00ffff;
-    text-shadow:0 0 20px cyan;
 }
 
 h2{
-    margin-bottom:10px;
-}
-
-.info{
-    font-size:20px;
-    margin:15px 0;
+    margin-bottom:15px;
 }
 
 .status{
-    color:#00ff66;
+    color:#00ff88;
     font-size:22px;
-    font-weight:bold;
+    margin-top:20px;
 }
 
 .footer{
     margin-top:25px;
     color:#ddd;
-    font-size:15px;
 }
 
 </style>
@@ -108,22 +103,22 @@ h2{
 
 <div class="card">
 
-<div class="logo">🚀</div>
+<div class="ball">⚽</div>
 
-<h1>NODE.JS WEB SERVER</h1>
+<h1>FIFA WORLD CUP</h1>
 
-<h2>นายชิณกฤช พจนาพันธ์</h2>
+<h2>🌍 Welcome to My Web Server 🌍</h2>
 
-<div class="info">
-รหัสนักศึกษา : <b>69319010220</b>
-</div>
+<p><strong>ชื่อ :</strong> นายชิณกฤช พจนาพันธ์</p>
+
+<p><strong>รหัสนักศึกษา :</strong> 69319010220</p>
 
 <div class="status">
-🟢 Railway Server Online
+🏆 Railway Server Online
 </div>
 
 <div class="footer">
-⚡ Powered by Node.js & Railway
+⚽ Powered by Node.js • Railway • World Cup Theme ⚽
 </div>
 
 </div>
@@ -133,7 +128,6 @@ h2{
 `);
 });
 
-// เริ่มต้น Server
 server.listen(port, () => {
-    console.log(`🚀 Server is running on port ${port}`);
+    console.log(`🚀 Server Running on Port ${port}`);
 });
