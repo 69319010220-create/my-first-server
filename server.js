@@ -1,22 +1,4 @@
-// เรียกใช้งาน Module http
-const http = require('http');
-
-// กำหนด Port
-const port = process.env.PORT || 3000;
-
-// สร้าง Web Server
-const server = http.createServer((req, res) => {
-
-    // ตั้งค่าการตอบกลับ
-    res.writeHead(200, {
-        'Content-Type': 'text/html; charset=utf-8'
-    });
-
-    // วันที่และเวลาปัจจุบัน
-    const today = new Date().toLocaleString('th-TH');
-
-    // ส่งหน้าเว็บ
-    res.end(`
+res.end(`
 <!DOCTYPE html>
 <html lang="th">
 <head>
@@ -25,84 +7,82 @@ const server = http.createServer((req, res) => {
 <title>My Web Server</title>
 
 <style>
-    body{
-        margin:0;
-        font-family:Arial, Helvetica, sans-serif;
-        background:linear-gradient(135deg,#0f62fe,#42a5f5);
-        display:flex;
-        justify-content:center;
-        align-items:center;
-        height:100vh;
-    }
 
-    .card{
-        background:white;
-        padding:40px;
-        border-radius:20px;
-        box-shadow:0 10px 25px rgba(0,0,0,0.25);
-        text-align:center;
-        max-width:700px;
-        width:90%;
-    }
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
 
-    h1{
-        color:#0f62fe;
-        margin-bottom:15px;
-    }
+body{
+    overflow:hidden;
+    font-family:Arial, sans-serif;
+}
 
-    h2{
-        color:#333;
-        margin:10px 0;
-    }
+/* วิดีโอพื้นหลัง */
+#bg-video{
+    position:fixed;
+    right:0;
+    bottom:0;
+    min-width:100%;
+    min-height:100%;
+    object-fit:cover;
+    z-index:-1;
+}
 
-    p{
-        color:#555;
-        font-size:18px;
-    }
+/* กล่องข้อความ */
+.card{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    background:rgba(0,0,0,.55);
+    color:white;
+    padding:40px;
+    border-radius:20px;
+    text-align:center;
+    backdrop-filter:blur(6px);
+    animation:fadeUp 1.2s;
+}
 
-    .success{
-        color:green;
-        font-weight:bold;
-        margin-top:20px;
-    }
+h1{
+    color:#00d4ff;
+    margin-bottom:20px;
+}
 
-    .footer{
-        margin-top:30px;
-        font-size:14px;
-        color:#777;
+@keyframes fadeUp{
+    from{
+        opacity:0;
+        transform:translate(-50%,-40%);
     }
+    to{
+        opacity:1;
+        transform:translate(-50%,-50%);
+    }
+}
+
 </style>
-
 </head>
 
 <body>
 
+<!-- เปลี่ยนไฟล์นี้เป็นคลิป Ronaldo ของคุณ -->
+<video autoplay muted loop id="bg-video">
+    <source src="ronaldo.mp4" type="video/mp4">
+</video>
+
 <div class="card">
+    <h1>⚽ Cristiano Ronaldo Fan Page</h1>
 
-<h1>🚀 Node.js Web Server</h1>
+    <h2>นายชิณกฤช พจนาพันธ์</h2>
 
-<h2>สวัสดีครับ</h2>
+    <p>รหัสนักศึกษา 69319010220</p>
 
-<p><strong>ชื่อ :</strong> นายชิณกฤช พจนาพันธ์</p>
+    <br>
 
-<p><strong>รหัสนักศึกษา :</strong> 69319010220</p>
-
-<p class="success">
-✅ เครื่องแม่ข่ายทำงานปกติบนระบบ Railway แล้ว
-</p>
-
-<div class="footer">
-วันที่และเวลา : ${today}
-</div>
-
+    <h3>🚀 Railway Server Online</h3>
 </div>
 
 </body>
 </html>
-    `);
-});
-
-// เปิด Server
-server.listen(port, () => {
-    console.log(`🚀 Server is running on port ${port}`);
-});
+`);
