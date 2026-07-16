@@ -4,7 +4,7 @@ res.end(`
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>My Web Server</title>
+<title>CR7 Web Server</title>
 
 <style>
 *{
@@ -18,42 +18,77 @@ body{
     overflow:hidden;
 }
 
-/* พื้นหลังวิดีโอ */
-video{
+/* พื้นหลัง */
+body::before{
+    content:"";
     position:fixed;
     top:0;
     left:0;
     width:100%;
     height:100%;
-    object-fit:cover;
+    background:url("ronaldo.jpg") center center/cover no-repeat;
+    filter:brightness(40%);
+    animation:zoom 20s infinite alternate;
+    z-index:-2;
+}
+
+/* Overlay */
+body::after{
+    content:"";
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:linear-gradient(rgba(0,0,0,.3),rgba(0,0,0,.6));
     z-index:-1;
 }
 
-/* กล่องข้อความ */
-.box{
+@keyframes zoom{
+    from{
+        transform:scale(1);
+    }
+    to{
+        transform:scale(1.15);
+    }
+}
+
+.card{
     position:absolute;
     top:50%;
     left:50%;
     transform:translate(-50%,-50%);
-    background:rgba(0,0,0,.6);
-    color:white;
+    background:rgba(255,255,255,.12);
+    backdrop-filter:blur(10px);
     padding:40px;
     border-radius:20px;
     text-align:center;
-    backdrop-filter:blur(5px);
-    animation:show 1s ease;
+    color:white;
+    box-shadow:0 0 30px rgba(0,0,0,.5);
+    animation:fade 1s;
 }
 
 h1{
-    color:#00c3ff;
+    font-size:42px;
+    color:#FFD700;
+}
+
+h2{
+    margin-top:20px;
 }
 
 p{
-    margin-top:10px;
-    font-size:18px;
+    margin-top:15px;
+    font-size:20px;
 }
 
-@keyframes show{
+.status{
+    color:#00ff88;
+    font-weight:bold;
+    margin-top:25px;
+}
+
+@keyframes fade{
     from{
         opacity:0;
         transform:translate(-50%,-40%);
@@ -64,20 +99,22 @@ p{
     }
 }
 </style>
-
 </head>
+
 <body>
 
-<video autoplay muted loop>
-    <source src="ronaldo.mp4" type="video/mp4">
-</video>
+<div class="card">
 
-<div class="box">
-    <h1>⚽ Cristiano Ronaldo Fan Page</h1>
-    <h2>นายชิณกฤช พจนาพันธ์</h2>
-    <p>รหัสนักศึกษา : 69319010220</p>
-    <br>
-    <p>🚀 Railway Server ทำงานปกติ</p>
+<h1>⚽ CR7 WEB SERVER ⚽</h1>
+
+<h2>นายรพีพัทธ์ เจริญรัญวุฒิกุล</h2>
+
+<p>รหัสนักศึกษา : 123456789</p>
+
+<p class="status">
+🚀 Railway Server Online
+</p>
+
 </div>
 
 </body>
