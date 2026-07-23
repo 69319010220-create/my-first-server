@@ -1,133 +1,36 @@
-const http = require("http");
-
-const port = process.env.PORT || 3000;
-
-const server = http.createServer((req, res) => {
-
-    res.writeHead(200, {
-        "Content-Type": "text/html; charset=utf-8"
-    });
-
-    res.end(`
-<!DOCTYPE html>
-<html lang="th">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>World Cup Server</title>
-
-<style>
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
-
-body{
-    font-family:Arial, sans-serif;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    height:100vh;
-    overflow:hidden;
-    background:linear-gradient(-45deg,#006400,#008000,#0b6623,#1b4332);
-    background-size:400% 400%;
-    animation:bg 12s ease infinite;
-}
-
-@keyframes bg{
-    0%{background-position:0% 50%;}
-    50%{background-position:100% 50%;}
-    100%{background-position:0% 50%;}
-}
-
-.card{
-    background:rgba(255,255,255,.12);
-    backdrop-filter:blur(12px);
-    padding:40px;
-    border-radius:20px;
-    text-align:center;
-    color:white;
-    width:650px;
-    box-shadow:0 0 30px rgba(255,215,0,.6);
-    animation:fade 1s;
-}
-
-@keyframes fade{
-    from{
-        opacity:0;
-        transform:translateY(50px);
-    }
-    to{
-        opacity:1;
-        transform:translateY(0);
-    }
-}
-
-.ball{
-    font-size:70px;
-    animation:spin 5s linear infinite;
-}
-
-@keyframes spin{
-    from{transform:rotate(0deg);}
-    to{transform:rotate(360deg);}
-}
-
-h1{
-    color:#FFD700;
-    margin:15px 0;
-}
-
-h2{
-    margin-bottom:15px;
-}
-
-.status{
-    color:#00ff88;
-    font-size:22px;
-    margin-top:20px;
-}
-
-.footer{
-    margin-top:25px;
-    color:#ddd;
-}
-
-</style>
-
-</head>
-
-<body>
-
-<div class="card">
-
-<div class="ball">⚽</div>
-
-<h1>FIFA WORLD CUP</h1>
-
-<h2>🌍 Welcome to My Web Server 🌍</h2>
-
-<p><strong>ชื่อ :</strong> นายชิณกฤช พจนาพันธ์</p>
-
-<p><strong>รหัสนักศึกษา :</strong> 69319010220</p>
-
-<div class="status">
-🏆 Railway Server Online
-</div>
-
-<div class="footer">
-⚽ Powered by Node.js • Railway • World Cup Theme ⚽
-</div>
-
-</div>
-
-</body>
-</html>
-`);
+const http = require('http');
+// 1. เรียกใชงาน Pool จากไลบรารี pg สําหรับจัดการการเชื่อมตอฐานขอมูล
+const { Pool } = require('pg');
+// 2. ตั้งคาการเชื่อมตอ โดยดึง URL มาจาก Environment Variable ของ Railway
+const pool = new Pool({
+connectionString: process.env.DATABASE_URL,
 });
+const port = process.env.PORT || 3000;
+const server = http.createServer(async (req, res) => {
+res.statusCode = 200;
+res.setHeader('Content-Type', 'text/html; charset=utf-8');
 
+try {
+// 3. ขอเชื่อมตอและสงคําสั่ง SQL ไปดึงขอมูลจากตาราง students
+const client = await pool.connect();
+const result = await client.query('SELECT * FROM students');
+client.release(); // คนืการเชื่อมตอเมื่อใชงานเสร็จ
+// 4. นําขอมูลที่ได(result.rows) มาประกอบเปนตาราง HTML
+let html = `<h1>ฐานข้อมูลนักศึกษา (ทดสอบการเชื่อมต่อ)</h1>`;
+html += `<table border="1" cellpadding="10">`;
+html += `<tr><th>69319010220</th><th>นายชิรกฤช พจนาพันธ์</th></tr>`;
+// วนลูปนําขอมูลแตละแถวมาแสดง
+result.rows.forEach(row => {
+html += `<tr><td>${row.student_id}</td><td>${row.student_name}</td></tr>`;
+});
+html += `</table>`;
+res.end(html);
+} catch (err) {
+// กรณเีชื่อมตอไมไดหรือเขียนชื่อตารางผิด
+console.error(err);
+res.end(`<h1>เกิดขอผิดพลาด!</h1><p>${err.message}</p>`);
+}
+});
 server.listen(port, () => {
-    console.log(`🚀 Server Running on Port ${port}`);
+console.log(`Server is running on port: ${port}`);
 });
