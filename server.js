@@ -17,138 +17,187 @@ const server = http.createServer(async (req, res) => {
     client.release();
 
     let html = `
-    <!DOCTYPE html>
-    <html lang="th">
-    <head>
-        <meta charset="UTF-8">
-        <title>ฐานข้อมูลนักศึกษา</title>
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>Student Database</title>
 
-        <style>
-            *{
-                margin:0;
-                padding:0;
-                box-sizing:border-box;
-                font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
-            }
+<style>
 
-            body{
-                background:linear-gradient(135deg,#4facfe,#00f2fe);
-                min-height:100vh;
-                display:flex;
-                justify-content:center;
-                align-items:center;
-            }
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Segoe UI,Arial,sans-serif;
+}
 
-            .container{
-                width:90%;
-                max-width:900px;
-                background:#fff;
-                padding:30px;
-                border-radius:20px;
-                box-shadow:0 15px 30px rgba(0,0,0,.25);
-            }
+body{
+    background:#0f172a;
+    color:white;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    overflow:hidden;
+}
 
-            h1{
-                text-align:center;
-                color:#0d6efd;
-                margin-bottom:10px;
-            }
+body::before{
+    content:"";
+    position:fixed;
+    width:600px;
+    height:600px;
+    background:#00bfff55;
+    filter:blur(180px);
+    top:-150px;
+    left:-100px;
+}
 
-            p{
-                text-align:center;
-                color:#666;
-                margin-bottom:25px;
-            }
+body::after{
+    content:"";
+    position:fixed;
+    width:500px;
+    height:500px;
+    background:#2563eb55;
+    filter:blur(170px);
+    bottom:-120px;
+    right:-120px;
+}
 
-            table{
-                width:100%;
-                border-collapse:collapse;
-                overflow:hidden;
-                border-radius:12px;
-            }
+.container{
+    width:90%;
+    max-width:900px;
+    background:rgba(255,255,255,.08);
+    backdrop-filter:blur(18px);
+    border:1px solid rgba(255,255,255,.2);
+    border-radius:20px;
+    padding:35px;
+    box-shadow:0 0 30px rgba(0,191,255,.3);
+    z-index:10;
+}
 
-            thead{
-                background:#0d6efd;
-                color:white;
-            }
+h1{
+    text-align:center;
+    color:#38bdf8;
+    margin-bottom:10px;
+    font-size:34px;
+}
 
-            th,td{
-                padding:15px;
-                text-align:center;
-            }
+.subtitle{
+    text-align:center;
+    color:#cbd5e1;
+    margin-bottom:30px;
+}
 
-            tbody tr:nth-child(even){
-                background:#f5f5f5;
-            }
+table{
+    width:100%;
+    border-collapse:collapse;
+    overflow:hidden;
+    border-radius:15px;
+}
 
-            tbody tr:hover{
-                background:#dbeafe;
-                transition:.3s;
-            }
+thead{
+    background:linear-gradient(90deg,#0ea5e9,#2563eb);
+}
 
-            .footer{
-                text-align:center;
-                margin-top:20px;
-                color:#666;
-                font-size:14px;
-            }
+th{
+    padding:18px;
+    color:white;
+    font-size:18px;
+}
 
-            .badge{
-                display:inline-block;
-                background:#198754;
-                color:white;
-                padding:8px 18px;
-                border-radius:20px;
-                margin-bottom:20px;
-                font-weight:bold;
-            }
-        </style>
-    </head>
+td{
+    padding:16px;
+    text-align:center;
+    border-bottom:1px solid rgba(255,255,255,.1);
+}
 
-    <body>
+tbody tr{
+    transition:.35s;
+}
 
-    <div class="container">
+tbody tr:nth-child(even){
+    background:rgba(255,255,255,.03);
+}
 
-        <h1>🎓 ฐานข้อมูลนักศึกษา</h1>
+tbody tr:hover{
+    background:#0ea5e955;
+    transform:scale(1.01);
+}
 
-        <p>
-            <span class="badge">เชื่อมต่อ PostgreSQL สำเร็จ</span>
-        </p>
+.footer{
+    margin-top:30px;
+    text-align:center;
+    color:#94a3b8;
+}
 
-        <table>
-            <thead>
-                <tr>
-                    <th>รหัสนักศึกษา</th>
-                    <th>ชื่อนักศึกษา</th>
-                </tr>
-            </thead>
+.badge{
+    display:inline-block;
+    margin-top:15px;
+    padding:10px 22px;
+    background:#2563eb;
+    border-radius:30px;
+    color:white;
+    font-weight:bold;
+    box-shadow:0 0 20px #2563eb;
+}
 
-            <tbody>
-    `;
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🎓 STUDENT DATABASE</h1>
+
+<div class="subtitle">
+ระบบฐานข้อมูลนักศึกษา PostgreSQL
+</div>
+
+<table>
+
+<thead>
+<tr>
+<th>รหัสนักศึกษา</th>
+<th>ชื่อนักศึกษา</th>
+</tr>
+</thead>
+
+<tbody>
+`;
 
     result.rows.forEach(row => {
       html += `
-        <tr>
-            <td>${row.student_id}</td>
-            <td>${row.student_name}</td>
-        </tr>
-      `;
+<tr>
+<td>${row.student_id}</td>
+<td>${row.student_name}</td>
+</tr>
+`;
     });
 
     html += `
-            </tbody>
-        </table>
+</tbody>
 
-        <div class="footer">
-            👨‍💻 พัฒนาโดย ชิณกฤช พจนาพันธ์ <br>
-            วิทยาลัยเทคโนโลยีชลบุรี | สาขาเทคโนโลยีสารสนเทศ
-        </div>
+</table>
 
-    </div>
+<div class="footer">
+<div class="badge">
+✅ Connected to PostgreSQL
+</div>
 
-    </body>
-    </html>
-    `;
+<br><br>
+
+พัฒนาโดย <b>ชิณกฤช พจนาพันธ์</b><br>
+วิทยาลัยเทคโนโลยีชลบุรี
+</div>
+
+</div>
+
+</body>
+</html>
+`;
 
     res.end(html);
 
@@ -156,10 +205,19 @@ const server = http.createServer(async (req, res) => {
     console.error(err);
 
     res.end(`
-      <h1 style="color:red;text-align:center">
-        ❌ เกิดข้อผิดพลาด
-      </h1>
-      <p style="text-align:center">${err.message}</p>
+    <body style="
+    background:#111827;
+    color:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    font-family:Segoe UI;">
+        <div style="text-align:center">
+            <h1 style="color:#ef4444;">❌ ERROR</h1>
+            <p>${err.message}</p>
+        </div>
+    </body>
     `);
   }
 });
